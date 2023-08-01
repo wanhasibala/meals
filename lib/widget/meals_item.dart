@@ -5,19 +5,22 @@ import 'package:meal_app/widget/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:meal_app/screen/meal_details.dart';
 
-class MealsIteme extends StatelessWidget {
-  const MealsIteme(
-      {required this.meal, super.key, required this.onSelectedMeal});
+class MealItem extends StatelessWidget {
+  const MealItem({
+    super.key,
+    required this.meal,
+    required this.onSelectMeal,
+  });
 
   final Meal meal;
-  final void Function( Meal meal) onSelectedMeal;
+  final void Function(Meal meal) onSelectMeal;
 
   String get complexityText {
     return meal.complexity.name[0].toUpperCase() +
         meal.complexity.name.substring(1);
   }
 
-  String get affordabilityCost {
+  String get affordabilityText {
     return meal.affordability.name[0].toUpperCase() +
         meal.affordability.name.substring(1);
   }
@@ -26,30 +29,32 @@ class MealsIteme extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
         onTap: () {
-          onSelectedMeal(meal);
+          onSelectMeal(meal);
         },
         child: Stack(
           children: [
             FadeInImage(
-              fit: BoxFit.cover,
               placeholder: MemoryImage(kTransparentImage),
               image: NetworkImage(meal.imageUrl),
+              fit: BoxFit.cover,
               height: 200,
               width: double.infinity,
             ),
             Positioned(
               bottom: 0,
-              right: 0,
               left: 0,
+              right: 0,
               child: Container(
                 color: Colors.black54,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 44, vertical: 6),
+                    const EdgeInsets.symmetric(vertical: 6, horizontal: 44),
                 child: Column(
                   children: [
                     Text(
@@ -57,36 +62,37 @@ class MealsIteme extends StatelessWidget {
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       softWrap: true,
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis, // Very long text ...
                       style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         MealItemTrait(
-                            icon: Icons.schedule,
-                            label: '${meal.duration} min'),
-                        const SizedBox(
-                          width: 12,
+                          icon: Icons.schedule,
+                          label: '${meal.duration} min',
                         ),
-                        MealItemTrait(icon: Icons.work, label: complexityText),
-                        const SizedBox(
-                          width: 12,
-                        ),
+                        const SizedBox(width: 12),
                         MealItemTrait(
-                            icon: Icons.attach_money, label: affordabilityCost),
+                          icon: Icons.work,
+                          label: complexityText,
+                        ),
+                        const SizedBox(width: 12),
+                        MealItemTrait(
+                          icon: Icons.attach_money,
+                          label: affordabilityText,
+                        )
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

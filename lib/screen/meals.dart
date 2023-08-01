@@ -5,23 +5,24 @@ import 'package:meal_app/screen/meal_details.dart';
 import 'package:meal_app/widget/meals_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen(
-      {this.title,
-      required this.onToogleFavorite,
-      required this.meals,
-      super.key});
+  const MealsScreen({
+    super.key,
+    this.title,
+    required this.meals,
+    required this.onToggleFavorite,
+  });
 
   final String? title;
   final List<Meal> meals;
-  final void Function(Meal meal) onToogleFavorite;
+  final void Function(Meal meal) onToggleFavorite;
 
-  void selectedMeal(BuildContext context, Meal meal) {
+  void selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: ((context) => MealDetailsScreen(
-              meal: meal,
-              onToogleFavorite: onToogleFavorite,
-            )),
+        builder: (ctx) => MealDetailsScreen(
+          meal: meal,
+          onToggleFavorite: onToggleFavorite,
+        ),
       ),
     );
   }
@@ -33,22 +34,17 @@ class MealsScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Uh Oh... There is nothing here',
-            textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .headlineLarge!
-                .copyWith(color: Theme.of(context).colorScheme.onBackground),
+            'Uh oh ... nothing here!',
+            style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
           ),
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           Text(
-            'Try selecting different category',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: Theme.of(context).colorScheme.onBackground),
+            'Try selecting a different category!',
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
           ),
         ],
       ),
@@ -57,10 +53,10 @@ class MealsScreen extends StatelessWidget {
     if (meals.isNotEmpty) {
       content = ListView.builder(
         itemCount: meals.length,
-        itemBuilder: (ctx, index) => MealsIteme(
+        itemBuilder: (ctx, index) => MealItem(
           meal: meals[index],
-          onSelectedMeal: (meal) {
-            selectedMeal(context, meal);
+          onSelectMeal: (meal) {
+            selectMeal(context, meal);
           },
         ),
       );
@@ -69,6 +65,7 @@ class MealsScreen extends StatelessWidget {
     if (title == null) {
       return content;
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title!),

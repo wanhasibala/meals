@@ -11,11 +11,11 @@ final Theme = ThemeData(
 );
 
 void main() {
-  runApp(const MateirialApp());
+  runApp(const MyApp());
 }
 
-class MateirialApp extends StatelessWidget {
-  const MateirialApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -23,7 +23,7 @@ class MateirialApp extends StatelessWidget {
     return MaterialApp(
       title: 'Meals App',
       theme: Theme,
-      home: const TabScreen(),
+      home: const TabsScreen(),
     );
   }
 }
